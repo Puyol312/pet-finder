@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target":"esnext",
+    "module": "nodenext",
+    "strict": true, 
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "build",
+    "rootDir": "be-src",
+  },
+  "include": ["be-src/**/*.ts"],
+  "exclude": ["node_modules", ".env", ".gitignore","fe-src"]
+}
