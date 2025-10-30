@@ -21,6 +21,15 @@
 
 /* Clase para ocultar el formulario */
 
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  z-index: 900;
+}
 #form-container {
   position: fixed;
   top: 50%;
@@ -32,7 +41,7 @@
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
   z-index: 1000;
 }
-#form-container::before {
+/* #form-container::before {
   content: "";
   position: fixed;
   top: 0;
@@ -41,7 +50,7 @@
   height: 100vh;
   background: rgba(235, 235, 235, 0.4);
   z-index: -1;
-}
+} */
 #form-container input[type="text"] {
   width: 100%;
   margin-bottom: 1rem;

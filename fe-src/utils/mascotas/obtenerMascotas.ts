@@ -41,28 +41,28 @@ const getMascotasCercaTest: GetMascotasCerca = async ({lat,lng}) => {
     },
     {
       name: 'Test 2',
-      img: 'loremipsum2',
+      img: 'https://lipsum.app/640x480/',
       street: "loremipsum2",
       city: 'loremipsum2',
       id:2
     },
     {
       name: 'Test 3',
-      img: 'loremipsum3',
+      img: 'https://lipsum.app/640x480/',
       street: "loremipsum3",
       city: 'loremipsum3',
       id:3
     },
     {
       name: 'Test 4',
-      img: 'loremipsum4',
+      img: 'https://lipsum.app/640x480/',
       street: "loremipsum4",
       city: 'loremipsum4',
       id:4
     },
     {
       name: 'Test 5',
-      img: 'loremipsum5',
+      img: 'https://lipsum.app/640x480/',
       street: "loremipsum5",
       city: 'loremipsum5',
       id:5

@@ -8,6 +8,7 @@ import "./mascotas.css"
 import getHeader from "../../components/header/header";
 import { getMascotasCercaTest as getMascotasCerca } from '../../utils/mascotas/obtenerMascotas'
 
+//PRE: Todos los datos existen y no son nulos.
 function agregarTarjeta({ name, img, city, street, id }: PetWanted, contenedor: HTMLElement) {
   const col = document.createElement('div');
   col.classList.add('col');
@@ -19,18 +20,17 @@ function agregarTarjeta({ name, img, city, street, id }: PetWanted, contenedor: 
     <div class="card-body">
       <h5 class="card-title">${name}</h5>
       <p class="card-text">${street}, ${city}</p>
-      <button class="btn btn-primary open-form" data-id="${id}">Reportar</button>
+      <button class="btn btn-primary open-form" data-id="${id}" data-name="${name}">Reportar</button>
     </div>
   `;
 
   col.appendChild(card);
   contenedor.appendChild(col);
 }
-// POST: debe devolver un formulario con id="info-form", con un boton de submit, y con los campos:  
+// POST: debe devolver un formulario con id="info-form", un campo texto corto "nombre", un campo numerico "telefono", y un text area "Donde"
 function getFormulario(): string {
   return `
   <form id="info-form">
-      <h3>Formulario</h3>
       <label>Mensaje:</label>
       <input type="text" name="mensaje" />
       <button type="submit">Enviar</button>
@@ -44,12 +44,15 @@ function handleClickForm(container: HTMLElement) {
     if (!(btn instanceof HTMLButtonElement)) return;
     e.stopPropagation();
     const id = btn.dataset.id;
-    if (!id) return;
+    const name = btn.dataset.name;
+    if (!id || !name) return;
 
     // Mostrar formulario
     const formContainer = document.querySelector("#form-container") as HTMLElement;
+    const overlay = document.querySelector("#overlay") as HTMLElement;
     if (!formContainer) return;
     formContainer.classList.remove("hidden");
+    overlay.classList.remove("hidden");
     
     // Insertar o actualizar input hidden con el id de la tarjeta
     let hiddenInput = formContainer.querySelector<HTMLInputElement>('input[name="cardId"]');
@@ -60,24 +63,36 @@ function handleClickForm(container: HTMLElement) {
       formContainer.querySelector("#info-form")!.appendChild(hiddenInput);
     }
     hiddenInput.value = id;
+    // Insertar o actualizar h3 con el name de la tarjeta
+    let titleName = formContainer.querySelector<HTMLHeadingElement>('#dog_name');
+    const form = formContainer.querySelector<HTMLFormElement>('#info-form')!;
+    if (!titleName) {
+      titleName = document.createElement('h3');
+      // ToDo: agregarle los estilso al titulo 
+      titleName.id = 'dog_name';
+      formContainer.querySelector("#info-form")!.appendChild(titleName);
+      form.insertBefore(titleName, form.firstChild);
+    }
+    titleName.innerText = `Reportar info de ${name} `
   });
 }
-function handleClickOutsideForm(formContainer: HTMLElement) {
+function handleClickOutsideForm(formContainer: HTMLElement, overlay: HTMLElement) {
   document.addEventListener("click", (e) => {
     const target = e.target as HTMLElement;
     e.stopPropagation();
 
     // Si el formulario está oculto, no hacer nada
-    if (formContainer.classList.contains("hidden")) return;
+    if (formContainer.classList.contains("hidden") && overlay.classList.contains("hidden")) return;
 
     // Si el click es dentro del formulario, tampoco hacer nada
     if (formContainer.contains(target)) return;
 
     // Si llegamos acá, el click fue fuera → ocultar formulario
     formContainer.classList.add('hidden');
+    overlay.classList.add('hidden');
   });
 }
-function handleFormSubmit(formContainer: HTMLElement) { 
+function handleFormSubmit(formContainer: HTMLElement, overlay: HTMLElement) { 
   const form = formContainer.querySelector('#info-form') as HTMLFormElement;
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -90,6 +105,7 @@ function handleFormSubmit(formContainer: HTMLElement) {
 
     // Cerrar formulario
     formContainer.classList.add('hidden');
+    overlay.classList.add('hidden');
 
     // Limpiar formulario si querés
     form.reset();
@@ -112,6 +128,10 @@ export function initMascotas(router: any): HTMLElement {
 
   body.appendChild(row);
 
+  const overlay = document.createElement('div');
+  overlay.id = 'overlay';
+  overlay.classList.add('hidden');
+
   const formContainer = document.createElement('div');
   formContainer.id = 'form-container';
   formContainer.classList.add('hidden');
@@ -120,7 +140,7 @@ export function initMascotas(router: any): HTMLElement {
 
   const mascotasPage = document.createElement("div");
   mascotasPage.classList.add('mascotas');
-  mascotasPage.append(header, body, formContainer);
+  mascotasPage.append(header, body, overlay, formContainer);
 
   if (!geolocation) {
     console.warn("No se encontró la geolocalización en el estado.");
@@ -140,8 +160,8 @@ export function initMascotas(router: any): HTMLElement {
   })();
   
   handleClickForm(row);
-  handleClickOutsideForm(formContainer);
-  handleFormSubmit(formContainer);
+  handleClickOutsideForm(formContainer, overlay);
+  handleFormSubmit(formContainer, overlay);
 
   return mascotasPage;
 }
