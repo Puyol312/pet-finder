@@ -8,7 +8,8 @@ import "./mascotas.css"
 import getHeader from "../../components/header/header";
 import { getMascotasCercaTest as getMascotasCerca } from '../../utils/mascotas/obtenerMascotas'
 
-//PRE: Todos los datos existen y no son nulos.
+// PRE: Todos los datos de la tarjeta existen y no son nulos; contenedor es un HTMLElement válido
+// POST: Se crea y agrega una tarjeta al contenedor con imagen, info y botón "Reportar"
 function agregarTarjeta({ name, img, city, street, id }: PetWanted, contenedor: HTMLElement) {
   const col = document.createElement('div');
   col.classList.add('col');
@@ -27,7 +28,8 @@ function agregarTarjeta({ name, img, city, street, id }: PetWanted, contenedor: 
   col.appendChild(card);
   contenedor.appendChild(col);
 }
-// POST: debe devolver un formulario con id="info-form", un campo texto corto "nombre", un campo numerico "telefono", y un text area "Donde"
+// Pre: -
+// Post: debe devolver un formulario en string con id="info-form", un campo texto corto "nombre", un campo numerico "telefono", y un text area "Donde".
 function getFormulario(): string {
   return `
   <form id="info-form">
@@ -37,6 +39,8 @@ function getFormulario(): string {
   </form>
   `;
 }
+// Pre: container contiene botones .open-form con data-id y data-name; existen #form-container, #overlay y #info-form
+// Post: al hacer click en un botón válido se muestra el formulario, se actualiza input hidden y título con la info de la tarjeta
 function handleClickForm(container: HTMLElement) {
   // Delegación de eventos: click en botón "Reportar"
   container.addEventListener("click", (e) => {
@@ -76,22 +80,25 @@ function handleClickForm(container: HTMLElement) {
     titleName.innerText = `Reportar info de ${name} `
   });
 }
+// PRE: formContainer y overlay son HTMLElement válidos y existen en el DOM
+// POST: Al hacer click fuera del formulario, se oculta formContainer y overlay
 function handleClickOutsideForm(formContainer: HTMLElement, overlay: HTMLElement) {
   document.addEventListener("click", (e) => {
     const target = e.target as HTMLElement;
     e.stopPropagation();
 
-    // Si el formulario está oculto, no hacer nada
     if (formContainer.classList.contains("hidden") && overlay.classList.contains("hidden")) return;
 
-    // Si el click es dentro del formulario, tampoco hacer nada
+    // Click dentro del formulario no hacer nada
     if (formContainer.contains(target)) return;
 
-    // Si llegamos acá, el click fue fuera → ocultar formulario
+    // Si llegamos acá ocultar formulario
     formContainer.classList.add('hidden');
     overlay.classList.add('hidden');
   });
 }
+// PRE: formContainer y overlay son HTMLElement válidos; #info-form existe dentro de formContainer
+// POST: Al enviar el formulario, se previene comportamiento por defecto, se maneja la data, se oculta el formulario y se resetea
 function handleFormSubmit(formContainer: HTMLElement, overlay: HTMLElement) { 
   const form = formContainer.querySelector('#info-form') as HTMLFormElement;
   form.addEventListener("submit", (e) => {
@@ -107,10 +114,12 @@ function handleFormSubmit(formContainer: HTMLElement, overlay: HTMLElement) {
     formContainer.classList.add('hidden');
     overlay.classList.add('hidden');
 
-    // Limpiar formulario si querés
+    // Limpiar formulario
     form.reset();
   });
 }
+// PRE: router es válido; State contiene geolocalización; getFormulario y getHeader devuelven HTML válido
+// POST: Se construye y retorna el contenedor de la página de mascotas con tarjetas cargadas, formulario listo y manejadores de eventos activos
 export function initMascotas(router: any): HTMLElement {
   const state = State.getInstance();
   const geolocation = state.getState()?.geolocation;
