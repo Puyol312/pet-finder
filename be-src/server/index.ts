@@ -12,15 +12,18 @@ import { index } from "../lib/algolia";
 import { getSHA256 } from "../lib/crypto";
 import { authMiddleware } from "./middlewares/auth-middleware";
 import { multerMiddleware } from "./middlewares/multer-middleware";
+import { escapeHtml } from "./middlewares/html-middleware";
 
 import { SECRET, PORT } from "../config";
 
 import { cloudinary } from "../lib/cloudinary";
+import { resend } from "./resend";
 
 // --- Herramientas ---
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname, "../../dist")));
 // --- Registrarse ---
 app.post("/auth", async (req, res) => {
   const { email, password } = req.body;
@@ -221,10 +224,15 @@ app.get("/misreportes", authMiddleware, async (req, res) => {
 app.get("/reportes", async (req, res) => {
   const { lat, lng } = req.query;
   if (!lat || !lng) return res.status(400).json({ error: "Informacion faltante." });
+  const latNum = parseFloat(lat as string);
+  const lngNum = parseFloat(lng as string);
+  if (isNaN(latNum) || isNaN(lngNum)) {
+    return res.status(400).json({ error: "Lat o lng inválidos." });
+  }
   try {
     const result = await index.search("", {
-      aroundLatLng: `${lat}, ${lng}`, 
-      aroundRadius: 10000000 
+      aroundLatLng: `${latNum}, ${lngNum}`, 
+      aroundRadius: 20000 
     }) as any;
     const cleanReports = result.hits.map((r: any) => ({
       name: r.name,
@@ -239,6 +247,36 @@ app.get("/reportes", async (req, res) => {
     return res.status(500).json({ error: "Error interno del servidor" });
   }
 });
+// --- Post seing report ---
+app.post('/reportes', async (req, res) => {
+  const { name, tel, message, reportId } = req.body;
+  if (!name || !tel || !message || !reportId) return res.status(400).json({ error: "Informacion faltante." });
+  if (typeof name !== "string" || typeof tel !== "string" || typeof message !== "string" || typeof reportId !== "number") {
+    return res.status(400).json({ error: "Datos inválidos." })
+  };
+  try {
+    const report = await Report.findByPk(reportId, { include: User }) as any;
+    if (!report) return res.status(404).json({ error: "Reporte no encontrado." });
+    const user = report.User as User;
+    if (!user) return res.status(404).json({ error: "Usuario no encontrado." });
+    const to = user.get('email') as string;
+    const data = await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to,
+      subject:`Un avistamiento de ${report.get('name')}`,
+      html: `
+        <p>Este mensaje te dejó <strong>${escapeHtml(name)}</strong>:</p>
+        <p>${escapeHtml(message)}</p>
+        <p>Teléfono: <strong>${escapeHtml(tel)}</strong></p>
+      `,
+    });
+    res.json({ message: 'Mensaje enviado correctamente', reporteId:reportId });
+  } catch (e) { 
+    console.error(e);
+    return res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
 app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, "../../dist", "index.html"));
 });
