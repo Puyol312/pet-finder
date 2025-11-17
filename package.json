@@ -1,11 +1,11 @@
 {
-  "name": "hola-mundo",
+  "name": "petfinder",
   "version": "1.0.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:back": "nodemon --watch be-src --exec npx tsx ./be-src/server/index.ts",
     "dev:front": "parcel serve ./fe-src/index.html",
-    "build:front": "parcel build ./src/index.html --dist-dir build --public-url /single-web-app",
+    "build:front": "parcel build ./fe-src/index.html --dist-dir dist",
     "build:back": "npx tsc",
     "run": "npx tsx ./src/server/index.ts",
     "build": "npm run build:front && npm run build:back",
@@ -18,7 +18,7 @@
   ],
   "author": "Caio Puyol",
   "license": "ISC",
-  "description": "Primer proyecto usando algolia.",
+  "description": "Tarea 1.",
   "dependencies": {
     "algoliasearch": "^4.25.2",
     "cloudinary": "^2.8.0",
@@ -30,6 +30,7 @@
     "multer": "^2.0.2",
     "pg": "^8.16.3",
     "pg-hstore": "^2.3.4",
+    "resend": "^6.4.2",
     "sequelize": "^6.37.7",
     "sweetalert2": "^11.26.3",
     "typescript": "^5.9.3"
