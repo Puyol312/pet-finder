@@ -1,0 +1,10 @@
+.login-img {
+  width: 100%;
+  max-width: 300px; /* mobile */
+}
+
+@media (min-width: 768px) {
+  .login-img {
+    max-width: 400px; /* tablet/desktop */
+  }
+}
