@@ -5,6 +5,7 @@ import { initSignUp } from "./pages/SignUp";
 import { initReportarMascotas } from "./pages/MisReportes";
 import { initReportarNuevaMascota } from "./pages/NuevoReporte";
 import { initEditarReporteMascota } from "./pages/EditarReporte";
+import { initHelp } from "./pages/help";
 
 const basePath = "/petfinder";
 
@@ -36,6 +37,10 @@ const routes = [
   {
     path: /\/editarreportemascota\/(.+)/,
     component:initEditarReporteMascota
+  },
+  {
+    path: /\/help/,
+    component:initHelp
   }
 ];
 
