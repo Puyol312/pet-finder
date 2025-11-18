@@ -1,7 +1,7 @@
 import { State } from "../../state"
 import getHeader from "../../components/header/header";
 import { getFooter } from "../../components/footer";
-import { crearUsuarioOk as crearUsuario } from '../../utils/API/users-controller';
+import { crearUsuario as crearUsuario } from '../../utils/API/users-controller';
 
 //@ts-ignore
 import './signup.css'

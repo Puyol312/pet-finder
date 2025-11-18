@@ -6,7 +6,7 @@ import { getFooter } from "../../components/footer";
 import { card } from "../../components/card";
 import { plussButton } from "../../components/plussButton";
 
-import { getMisMascotasReportadasTest as getMisMascotasReportadas } from "../../utils/API/mascotas-controller";
+import { getMisMascotasReportadasApi as getMisMascotasReportadas } from "../../utils/API/mascotas-controller";
 import Swal from "sweetalert2";
 
 function handleClickForm(row: HTMLElement, router:any) {
@@ -20,7 +20,6 @@ function handleClickForm(row: HTMLElement, router:any) {
     router.goTo(`/editarreportemascota/${id}`)
   });
 }
-//ToDo: Toda la parte editar.
 export function initReportarMascotas(router: any): HTMLElement { 
   const state = State.getInstance();
   

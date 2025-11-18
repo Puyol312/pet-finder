@@ -5,7 +5,7 @@ import { State } from "../../state"
 import getHeader from "../../components/header/header";
 import { getFooter } from "../../components/footer";
 
-import { verificarUsuarioOk as verificarUsuario } from '../../utils/API/users-controller';
+import { verificarUsuario as verificarUsuario } from '../../utils/API/users-controller';
 
 function getBody(): HTMLElement { 
   const img = new URL('./undraw_login_re_4vu2 1.svg', import.meta.url).href;
@@ -84,7 +84,7 @@ function handleLocationClick(router: any, state: State) {
         lng: position.coords.longitude,
       };
       state.setGeolocation(geolocation);
-      router.goTo('/reportarMascota');
+      router.goTo('/reportarmascota');
     },
     (error) => {
       console.error("Error al obtener la ubicación:", error);
@@ -120,7 +120,7 @@ function handleSubmit(form: HTMLFormElement, errorBox: HTMLElement, state: State
         record: remember,
       });
       if (state.EstaUbicado()) { 
-        router.goTo('/reportarMascota');
+        router.goTo('/reportarmascota');
       } else {
         Swal.fire({
             icon: 'error',

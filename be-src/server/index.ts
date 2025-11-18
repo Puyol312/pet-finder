@@ -17,7 +17,6 @@ import { escapeHtml } from "./middlewares/html-middleware";
 import { SECRET, PORT } from "../config";
 
 import { cloudinary } from "../lib/cloudinary";
-import { resend } from "./resend";
 
 // --- Herramientas ---
 const app = express();
@@ -160,10 +159,14 @@ app.put("/misreportes/:id", authMiddleware, multerMiddleware("imagen"), async (r
     // --- Actualizacion en ALgolia --- 
     await index.partialUpdateObject({
       objectID: report.get("id"),
+      name: report.get('name'),
+      city: report.get('city'),
+      country: report.get('country'),
+      img: report.get('img'),
       _geoloc: {
-        lat: latNum,
-        lng: lngNum,
-      },
+        lat:latNum,
+        lng:lngNum
+      }
     });
     return res.json({
       message: "Reporte actualizado correctamente",
@@ -257,19 +260,20 @@ app.post('/reportes', async (req, res) => {
   try {
     const report = await Report.findByPk(reportId, { include: User }) as any;
     if (!report) return res.status(404).json({ error: "Reporte no encontrado." });
-    const user = report.User as User;
+    const user = report.user as User;
     if (!user) return res.status(404).json({ error: "Usuario no encontrado." });
     const to = user.get('email') as string;
-    const data = await resend.emails.send({
-      from: "onboarding@resend.dev",
-      to,
-      subject:`Un avistamiento de ${report.get('name')}`,
-      html: `
+    const data = await fetch('https://apx.school/api/utils/email-to-student', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        to,
+        message: `
         <p>Este mensaje te dejó <strong>${escapeHtml(name)}</strong>:</p>
         <p>${escapeHtml(message)}</p>
-        <p>Teléfono: <strong>${escapeHtml(tel)}</strong></p>
-      `,
-    });
+        <p>Teléfono: <strong>${escapeHtml(tel)}</strong></p>`
+      })
+    })
     res.json({ message: 'Mensaje enviado correctamente', reporteId:reportId });
   } catch (e) { 
     console.error(e);

@@ -8,8 +8,8 @@ import Swal from "sweetalert2";
 
 import getHeader from "../../components/header/header";
 import {
-  getMascotasCercaTest as getMascotasCerca,
-  enviarReporteMascotaOk as enviarReporteMascota
+  getMascotasCercaApi as getMascotasCerca,
+  enviarReporteMascota as enviarReporteMascota
 } from '../../utils/API/mascotas-controller';
 
 // PRE: Todos los datos de la tarjeta existen y no son nulos; contenedor es un HTMLElement válido
@@ -136,12 +136,12 @@ function handleFormSubmit(formContainer: HTMLElement, overlay: HTMLElement) {
     const payload = Object.fromEntries(data.entries());
     // ------------------------------ DELETE -----------------------------------------
     console.log("Enviando al back:", payload);
-    const [name, tel, message, cardId] = ['testNombre', 'testTel', 'testMessage', 0];
+    // const [name, tel, message, cardId] = ['testNombre', 'testTel', 'testMessage', 0];
     // ----------------------------------------------------------------------------------
-    // const name = payload.name?.toString() ?? '';
-    // const tel = payload.tel?.toString() ?? '';
-    // const message = payload.message?.toString() ?? '';
-    // const cardId = Number(payload.cardId); 
+    const name = payload.name?.toString() ?? '';
+    const tel = payload.tel?.toString() ?? '';
+    const message = payload.message?.toString() ?? '';
+    const cardId = Number(payload.cardId); 
     enviarReporteMascota(name, tel, message, cardId)
       .then(respuesta => {
         Swal.fire({

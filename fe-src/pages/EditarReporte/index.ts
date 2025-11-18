@@ -10,8 +10,8 @@ import getHeader from "../../components/header/header";
 import { DtReporte } from "../../types/types-mascota";
 
 import {
-  getMiReporteByIdOk as getMiReporteById,
-  editarReporteMascotaOk as editarReporteMascota
+  getMiReporteByIdApi as getMiReporteById,
+  editarReporteMascotaApi as editarReporteMascota
 } from "../../utils/API/mascotas-controller";
 
 //PRE:-
@@ -35,18 +35,18 @@ function handleFormSubmit(form: HTMLFormElement, router: any) {
     e.stopPropagation();
 
     const data = new FormData(form);
-    // const nombre = data.get("nombre")?.toString() ?? "";
-    // const ubicacion = data.get("ubicacion")?.toString() ?? "";
-    // const [latitud, longitud] = ubicacion.split(",").map(Number);
-    // const ciudad = data.get("ciudad")?.toString() ?? "";
-    // const pais = data.get("pais")?.toString() ?? "";
-    // const token = data.get("token")?.toString() ?? "";
-    // const imagen = data.get("imagen") as File;
+    const nombre = data.get("nombre")?.toString() ?? "";
+    const ubicacion = data.get("ubicacion")?.toString() ?? "";
+    const [latitud, longitud] = ubicacion.split(",").map(Number);
+    const ciudad = data.get("ciudad")?.toString() ?? "";
+    const pais = data.get("pais")?.toString() ?? "";
+    const token = data.get("token")?.toString() ?? "";
+    const imagen = data.get("imagen") as File;
     // ------------------------------ DELETE -----------------------------------------
     const plainData = Object.fromEntries(data.entries());
     console.log("Payload final:", plainData);
-    const imagen = new File(["contenido falso"], "mascota.jpg", { type: "image/jpeg" });
-    const [token, latitud, longitud, nombre, ciudad, pais] = ['testToken', 0, 0, 'testNombre', 'testCity', 'testPais'];
+    // const imagen = new File(["contenido falso"], "mascota.jpg", { type: "image/jpeg" });
+    // const [token, latitud, longitud, nombre, ciudad, pais] = ['testToken', 0, 0, 'testNombre', 'testCity', 'testPais'];
     // -------------------------------------------------------------------------------
 
     editarReporteMascota(token, id, { location: { lat: latitud, lng: longitud }, name: nombre, city: ciudad, country: pais, img: imagen })
