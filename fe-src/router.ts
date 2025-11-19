@@ -1,4 +1,4 @@
-import { initHome } from "./pages/Home";
+import { initHome } from "./pages/home";
 import { initMascotas } from "./pages/Reportes";
 import { initSignIn } from "./pages/SignIn";
 import { initSignUp } from "./pages/SignUp";
