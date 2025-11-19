@@ -10,5 +10,5 @@
     "rootDir": "be-src",
   },
   "include": ["be-src/**/*.ts"],
-  "exclude": ["node_modules", ".env", ".gitignore","fe-src"]
+  "exclude": ["node_modules", ".env", ".gitignore","fe-src", "dist"]
 }
