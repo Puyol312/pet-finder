@@ -19,7 +19,8 @@ function getCard({ name, img, city, street, id }: PetWanted): HTMLElement {
   `;
   return card;
 }
-function getCardEdit({ name, img, city, street, id }: PetWanted): HTMLElement { 
+function getCardEdit({ name, img, city, street, id }: PetWanted): HTMLElement {
+  const pencilSVG = new URL('./MdiLightPencil.svg', import.meta.url).href;
   const card = document.createElement('div');
   card.classList.add('card', 'h-100', 'shadow-sm');
   card.innerHTML = `
@@ -28,7 +29,8 @@ function getCardEdit({ name, img, city, street, id }: PetWanted): HTMLElement {
       <div class="card-body">
         <h5 class="card-title">${name}</h5>
         <p class="card-text">${street}, ${city}</p>
-        <button class="btn btn-success open-form" data-id="${id}" data-name="${name}">
+        <button class="btn btn-success open-form d-flex align-items-center gap-2" data-id="${id}" data-name="${name}">
+          <img src="${pencilSVG}" alt="Editar" style="width:18px; height:18px;">
           Editar
         </button>
       </div>

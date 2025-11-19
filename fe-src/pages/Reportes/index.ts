@@ -8,13 +8,14 @@ import Swal from "sweetalert2";
 
 import getHeader from "../../components/header/header";
 import {
-  getMascotasCercaApi as getMascotasCerca,
+  getMascotasCercaTest as getMascotasCerca,
   enviarReporteMascota as enviarReporteMascota
 } from '../../utils/API/mascotas-controller';
 
 // PRE: Todos los datos de la tarjeta existen y no son nulos; contenedor es un HTMLElement válido
 // POST: Se crea y agrega una tarjeta al contenedor con imagen, info y botón "Reportar"
 function agregarTarjeta({ name, img, city, street, id }: PetWanted, contenedor: HTMLElement) {
+  const reportSVG = new URL('./IconParkTwotoneReport.svg', import.meta.url).href;
   const col = document.createElement('div');
   col.classList.add('col');
 
@@ -26,7 +27,8 @@ function agregarTarjeta({ name, img, city, street, id }: PetWanted, contenedor: 
       <div class="card-body">
         <h5 class="card-title">${name}</h5>
         <p class="card-text">${street}, ${city}</p>
-        <button class="btn btn-danger open-form" data-id="${id}" data-name="${name}">
+        <button class="btn btn-success open-form d-flex align-items-center gap-2" data-id="${id}" data-name="${name}">
+          <img src="${reportSVG}" alt="Editar" style="width:18px; height:18px;">
           Reportar
         </button>
       </div>
