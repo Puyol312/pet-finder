@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 
 import getHeader from "../../components/header/header";
 import {
-  getMascotasCercaTest as getMascotasCerca,
+  getMascotasCercaApi as getMascotasCerca,
   enviarReporteMascota as enviarReporteMascota
 } from '../../utils/API/mascotas-controller';
 
