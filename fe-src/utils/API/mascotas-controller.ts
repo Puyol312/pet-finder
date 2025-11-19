@@ -1,17 +1,14 @@
 import { PetWanted, DtReporte } from "../../types/types-mascota";
 import { Geolocation, User } from "../../types/types-state";
 import { API_BASE_URL } from "../../config";
-
-type ReporteResponse = { message: string; reporteId: number; };
-type IEnviarReporte = (name: string, tel: string, message: string, reportId: number) => Promise<ReporteResponse>;
-type IAltaReporteMascota = (token: string, newReport:DtReporte) => Promise<ReporteResponse>;
-type IEditarReporteMascota = (token: string, id:number, newReport:DtReporte) => Promise<ReporteResponse>;
-type IGetMiReporteById = (token: string, id: number) => Promise<DtReporte>;
-type IGetMascotas = (user: User) => Promise<PetWanted[] | null>;
-type IGetMascotasCerca = ({ lat, lng }: Geolocation) => Promise<PetWanted[] | null>;
-
-// --- Obtener Reportes ---
-
+import {
+  IGetMascotasCerca, 
+  IEnviarReporte,
+  IGetMascotas,
+  IAltaReporteMascota,
+  IEditarReporteMascota,
+  IGetMiReporteById
+} from "../../types/types-controlador";
 // PRE: Se reciben coordenadas válidas (lat, lng)
 // POST: Retorna un array de mascotas cercanas o null si ocurre un error en la petición
 const getMascotasCercaApi:IGetMascotasCerca = async ({ lat, lng }: Geolocation) => {
@@ -33,50 +30,6 @@ const getMascotasCercaApi:IGetMascotasCerca = async ({ lat, lng }: Geolocation) 
     return null;
   }
 }
-// PRE: Se reciben coordenadas válidas (lat, lng)
-// POST: Retorna una lista mock de mascotas para pruebas sin realizar peticiones reales
-const getMascotasCercaTest: IGetMascotasCerca = async ({lat,lng}) => { 
-  const datosMock: PetWanted[] = [
-    {
-      name: 'Test 1',
-      img: 'https://lipsum.app/640x480/',
-      street: "loremipsum1",
-      city: 'loremipsum1',
-      id:1
-    },
-    {
-      name: 'Test 2',
-      img: 'https://lipsum.app/640x480/',
-      street: "loremipsum2",
-      city: 'loremipsum2',
-      id:2
-    },
-    {
-      name: 'Test 3',
-      img: 'https://lipsum.app/640x480/',
-      street: "loremipsum3",
-      city: 'loremipsum3',
-      id:3
-    },
-    {
-      name: 'Test 4',
-      img: 'https://lipsum.app/640x480/',
-      street: "loremipsum4",
-      city: 'loremipsum4',
-      id:4
-    },
-    {
-      name: 'Test 5',
-      img: 'https://lipsum.app/640x480/',
-      street: "loremipsum5",
-      city: 'loremipsum5',
-      id:5
-    },
-  ];
-  return datosMock; 
-}
-// --- Reportar Mascota cerca ---
-
 // PRE: Se reciben parámetros válidos (name, tel, message, reportId) y API_BASE_URL definido
 // POST: Envía el reporte al backend y retorna la respuesta JSON o lanza un error si falla
 const enviarReporteMascota:IEnviarReporte = async (name: string, tel: string, message: string, reportId:number)=> { 
@@ -107,25 +60,6 @@ const enviarReporteMascota:IEnviarReporte = async (name: string, tel: string, me
     throw err;
   }
 }
-// PRE: Se reciben parámetros válidos (name, tel, message, reportId)
-// POST: Retorna una promesa resuelta simulando una respuesta exitosa del backend tras 2 segundos
-const enviarReporteMascotaOk: IEnviarReporte = async (name: string, tel: string, message: string, reportId: number) => {
-  return new Promise<ReporteResponse>((resolve) => {
-    setTimeout(() => {
-      resolve({
-        message: "Todo salió bien.",
-        reporteId: 20
-      });
-    }, 2000);
-  });
-}
-// PRE: Se reciben parámetros válidos (name, tel, message, reportId)
-// POST: Lanza un error simulado para probar el manejo de fallos en el envío de reportes
-const enviarReporteMascotaError: IEnviarReporte = async (name: string, tel: string, message: string, reportId: number) => {
-  throw new Error(`Error al enviar reporte: Simulacro de error`);
-}
-// --- Obtener mis reportes ---
-
 // PRE: Se recibe un usuario válido con token y API_BASE_URL definido
 // POST: Retorna las mascotas reportadas del usuario o null si ocurre un error en la petición
 const getMisMascotasReportadasApi: IGetMascotas = async (user: User) => { 
@@ -143,50 +77,8 @@ const getMisMascotasReportadasApi: IGetMascotas = async (user: User) => {
 
   return await res.json() as PetWanted[];
 }
-// PRE: Se recibe un usuario válido (user)
-// POST: Retorna una lista mock de mascotas reportadas para pruebas sin realizar peticiones reales
-const getMisMascotasReportadasTest: IGetMascotas = async (user: User) => { 
-   const datosMock: PetWanted[] = [
-    {
-      name: 'Test 1',
-      img: 'https://lipsum.app/640x480/',
-      street: "loremipsum1",
-      city: 'loremipsum1',
-      id:1
-    },
-    {
-      name: 'Test 2',
-      img: 'https://lipsum.app/640x480/',
-      street: "loremipsum2",
-      city: 'loremipsum2',
-      id:2
-    },
-    {
-      name: 'Test 3',
-      img: 'https://lipsum.app/640x480/',
-      street: "loremipsum3",
-      city: 'loremipsum3',
-      id:3
-    },
-    {
-      name: 'Test 4',
-      img: 'https://lipsum.app/640x480/',
-      street: "loremipsum4",
-      city: 'loremipsum4',
-      id:4
-    },
-    {
-      name: 'Test 5',
-      img: 'https://lipsum.app/640x480/',
-      street: "loremipsum5",
-      city: 'loremipsum5',
-      id:5
-    },
-  ];
-  return datosMock;
-}
-// --- Alta reporte mascota --- 
-
+// PRE: Se recibe un token válido y un DtReporte con todos los campos completos (name, city, country, lat, lng, img)
+// POST: Envía el formulario al backend y retorna la respuesta JSON o lanza un error si ocurre un fallo
 const altaReporteMascotaApi: IAltaReporteMascota = async (token: string, newReport:DtReporte) => {
   try {
     const formData = new FormData();
@@ -218,21 +110,8 @@ const altaReporteMascotaApi: IAltaReporteMascota = async (token: string, newRepo
     throw err;
   }
 }
-const altaReporteMascotaOk: IAltaReporteMascota = async (token: string, newReport:DtReporte) => {
-    return new Promise<ReporteResponse>((resolve) => {
-    setTimeout(() => {
-      resolve({
-        message: "Todo salió bien.",
-        reporteId: 20
-      });
-    }, 2000);
-  });
-}
-const altaReporteMascotaError: IAltaReporteMascota = async (token: string, newReport:DtReporte) => {
-  throw new Error(`Error al enviar reporte: Simulacro de error`);
-}
-// --- Obtener mi reporte ---
-
+// PRE: Se recibe un token válido y un id numérico existente del reporte
+// POST: Retorna los datos del reporte y la imagen convertida a File, o lanza un error si falla la petición
 const getMiReporteByIdApi: IGetMiReporteById = async (token: string, id: number) => { 
   const res = await fetch(`${API_BASE_URL}/misreportes/${id}`, {
     headers: { Authorization: `Bearer ${token}` }
@@ -258,22 +137,8 @@ const getMiReporteByIdApi: IGetMiReporteById = async (token: string, id: number)
     img: imgFile,
   };
 }
-const getMiReporteByIdOk: IGetMiReporteById = async (token: string, id: number) => { 
-  const imagen = new File(["contenido falso"], "mascota.jpg", { type: "image/jpeg" });
-  const [latitud, longitud, nombre, ciudad, pais] = [10, -20, 'testNombre', 'testCity', 'testPais'];
-  return {
-    location: { lat: latitud, lng: longitud },
-    name: nombre,
-    city: ciudad,
-    country: pais,
-    img:imagen
-  }
-}
-const getMiReporteByIdError: IGetMiReporteById = async (token: string, id: number) => { 
-  throw new Error(`Error al obtener reporte simulacro (status 404)`);
-}
-
-// --- Editar Reporte ---
+// PRE: Se reciben un token válido, un id existente y un objeto newReport con datos correctos
+// POST: Actualiza el reporte y retorna la respuesta JSON o lanza un error si falla la petición
 const editarReporteMascotaApi: IEditarReporteMascota = async (token: string, id: number, newReport: DtReporte) => { 
   try {
     const formData = new FormData();
@@ -305,46 +170,12 @@ const editarReporteMascotaApi: IEditarReporteMascota = async (token: string, id:
     throw err;
   }
 }
-const editarReporteMascotaOk: IEditarReporteMascota = async (token: string, id: number, newReport: DtReporte) => { 
-  return new Promise<ReporteResponse>((resolve) => {
-    setTimeout(() => {
-      resolve({
-        message: "Todo salió bien.",
-        reporteId: 20
-      });
-    }, 2000);
-  });
-}
-const editarReporteMascotaError: IEditarReporteMascota = async (token: string, id: number, newReport: DtReporte) => { 
-  throw new Error(`Error al enviar reporte: Simulacro de Error`);
-}
-// --- Exportaciones ---
 
-//Produccion
-export const controladorMascotas = {
-  getMascotasCerca: getMascotasCercaApi,
-  enviarReporteMascota: enviarReporteMascota,
-  getMisMascotasReportadas: getMisMascotasReportadasApi,
-  altaReporteMascota: altaReporteMascotaApi,
-  getMiReporteById: getMiReporteByIdApi,
-  editarReporteMascota:editarReporteMascotaApi
-};
-//Desarrollo
 export {
   getMascotasCercaApi,
-  getMascotasCercaTest,
   enviarReporteMascota,
-  enviarReporteMascotaOk,
-  enviarReporteMascotaError,
   getMisMascotasReportadasApi,
-  getMisMascotasReportadasTest,
   altaReporteMascotaApi,
-  altaReporteMascotaOk,
-  altaReporteMascotaError,
   getMiReporteByIdApi,
-  getMiReporteByIdOk,
-  getMiReporteByIdError,
   editarReporteMascotaApi,
-  editarReporteMascotaOk,
-  editarReporteMascotaError
 }

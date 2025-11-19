@@ -160,6 +160,8 @@ function getFormulario(): HTMLFormElement {
 
   return formEl;
 }
+// PRE: Se recibe un formulario válido y un DtReporte con datos consistentes (name, city, country, location, img)
+// POST: Completa los campos del formulario con los datos del reporte y muestra la imagen si está disponible
 async function inyectarDatosEnFormulario(form: HTMLFormElement, reporte: DtReporte) {
   // Campos básicos
   (form.querySelector('#nombre') as HTMLInputElement).value = reporte.name || '';
@@ -191,6 +193,10 @@ async function inyectarDatosEnFormulario(form: HTMLFormElement, reporte: DtRepor
     }
   }
 }
+// PRE: El usuario debe estar registrado, tener token válido y haber otorgado ubicación. 
+//      Debe existir un ID de reporte válido en la URL y existir en la base de datos.
+// POST: Renderiza el formulario de edición, inyecta los datos del reporte, inicializa el mapa, 
+//       permite editar y enviar los cambios, o redirige si ocurre un error.
 export function initEditarReporteMascota(router:any):HTMLElement { 
   const state = State.getInstance();
   // --- Verificacion de Datos ---

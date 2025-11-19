@@ -1,6 +1,8 @@
 import { getFooter } from "../../components/footer";
 import getHeader from "../../components/header/header";
 
+// PRE: Deben existir los assets (img-help.jpg) y estar disponible import.meta.url; no requiere parámetros.
+// POST: Retorna el cuerpo de la página de ayuda como un HTMLElement con imagen, texto explicativo y botón de retorno.
 function getBody(): HTMLElement {
   const imghelp = new URL('./img-help.jpg', import.meta.url).href;
   const container = document.createElement('div');
@@ -56,7 +58,8 @@ function getBody(): HTMLElement {
   `;
   return container;
 }
-
+// PRE: Se recibe un router válido; existen funciones getHeader(), getBody() y getFooter() que retornan elementos HTML.
+// POST: Construye el layout principal (header, body, footer), lo inserta en un contenedor y devuelve dicho contenedor listo para renderizar.
 export function initHelp(router: any):HTMLElement { 
   const container = document.createElement("div"); 
   // --- Armado del layout ---

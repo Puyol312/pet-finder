@@ -7,6 +7,11 @@ import { getFooter } from "../../components/footer";
 
 import { verificarUsuario as verificarUsuario } from '../../utils/API/users-controller';
 
+// PRE: Debe existir el archivo SVG en la ruta indicada; Bootstrap debe estar cargado;
+//      la función debe ejecutarse en un entorno DOM válido. 
+// POST: Devuelve el body de la página de login con imagen ilustrativa, formulario
+//       funcional, mensajes de error preparados y enlaces a recuperación de contraseña
+//       y registro.
 function getBody(): HTMLElement { 
   const img = new URL('./undraw_login_re_4vu2 1.svg', import.meta.url).href;
   const section = document.createElement('section');
@@ -71,6 +76,10 @@ function getBody(): HTMLElement {
   `;
   return section;
 }
+// PRE: Debe recibirse un router válido y una instancia de State; el navegador debe
+//      soportar geolocation o se redirigirá automáticamente a /help.
+// POST: Si la geolocalización se obtiene correctamente, se guarda en el State y se
+//       redirige a /reportarmascota; si falla o no existe soporte, se redirige a /help.
 function handleLocationClick(router: any, state: State) {
   if (!("geolocation" in navigator)) {
     router.goTo('/help');
@@ -92,6 +101,12 @@ function handleLocationClick(router: any, state: State) {
     }
   );
 }
+// PRE: Debe recibirse un formulario válido, un contenedor de errores existente,
+//      y una instancia de State con métodos setUser() y EstaUbicado().
+//      El backend debe permitir verificarUsuario(email, pass) y retornar un token.
+// POST: Valida email/contraseña, intenta iniciar sesión, guarda el usuario en el State,
+//       redirige a /reportarmascota si ya hay ubicación; si no, la solicita.
+//       Muestra errores en pantalla cuando corresponde.
 function handleSubmit(form: HTMLFormElement, errorBox: HTMLElement, state: State, router: any) {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -138,6 +153,12 @@ function handleSubmit(form: HTMLFormElement, errorBox: HTMLElement, state: State
     }
   });
 }
+// PRE: Debe existir un State inicializado, el usuario puede o no estar logueado,
+//      y deben estar disponibles los componentes getHeader(), getBody(), getFooter()
+//      y la función handleSubmit().  
+// POST: Si el usuario ya está logueado y sin ubicación, la solicita.
+//       Si está logueado y ubicado, redirige a /reportarmascota.
+//       Si no está logueado, renderiza la página de inicio de sesión y activa el formulario.
 export function initSignIn(router: any): HTMLElement {
   // Data del usuario
   const state = State.getInstance();

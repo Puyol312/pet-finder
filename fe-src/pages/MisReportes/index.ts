@@ -9,6 +9,9 @@ import { plussButton } from "../../components/plussButton";
 import { getMisMascotasReportadasApi as getMisMascotasReportadas } from "../../utils/API/mascotas-controller";
 import Swal from "sweetalert2";
 
+// PRE: Se recibe una row válida que contiene un botón con clase "open-form" y data-id;
+//      la ruta /editarreportemascota/:id debe existir.
+// POST: Asocia el click al botón, obtiene el ID del reporte y redirige a la página de edición.
 function handleClickForm(row: HTMLElement, router:any) {
   // Delegación de eventos: click en botón "Reportar"
   row.addEventListener("click", (e) => {
@@ -20,6 +23,12 @@ function handleClickForm(row: HTMLElement, router:any) {
     router.goTo(`/editarreportemascota/${id}`)
   });
 }
+// PRE: El usuario debe tener sesión activa y haber otorgado ubicación;
+//      deben existir las rutas /signin, /home y /reportarnuevamascota.
+//      card, plussButton, State y getMisMascotasReportadas deben estar correctamente inicializados.
+// POST: Renderiza la página de "Reportar Mascotas", carga las tarjetas del usuario,
+//       muestra mensajes si no hay reportes, permite navegar a crear un nuevo reporte,
+//       y habilita la edición de cada tarjeta mediante handleClickForm().
 export function initReportarMascotas(router: any): HTMLElement { 
   const state = State.getInstance();
   

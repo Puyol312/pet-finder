@@ -1,8 +1,8 @@
 import { API_BASE_URL } from "../../config";
-type IverificarUsuario = (email: string, password: string) => Promise<string>;
-type IcrearUsuario = (email: string, password: string) => Promise<string>;
+import { IverificarUsuario, IcrearUsuario } from "../../types/types-controlador";
 
-// --- Log in Usuario ---
+// PRE: Se reciben email y password válidos (strings no vacíos)
+// POST: Retorna el token JWT si las credenciales son correctas o lanza un error si falla la autenticación
 const verificarUsuario: IverificarUsuario = async (email: string, password: string) => {
   const res = await fetch(`${API_BASE_URL}/auth/token`, {
     method: "POST",
@@ -18,21 +18,8 @@ const verificarUsuario: IverificarUsuario = async (email: string, password: stri
   const data = await res.json();
   return data.token;
 }
-const verificarUsuarioOk: IverificarUsuario = (email: string, password: string) => { 
-  return new Promise<string>(resolve => {
-    setTimeout(() => {
-      resolve('tokenfalso');
-    }, 2000)
-  });
-} 
-const verificarUsuarioError: IverificarUsuario = (email: string, password: string) => {
-  return new Promise<string>((_resolve, reject) => {
-    setTimeout(() => {
-      reject("Error al verificar usuario: Simulacro de error");
-    }, 2000);
-  });
-}
-// --- Alta Usuario ---
+// PRE: Se reciben email y password válidos (strings no vacíos)
+// POST: Retorna el token JWT generado tras crear el usuario o lanza un error si ocurre un fallo en el registro
 const crearUsuario: IcrearUsuario = async (email: string, password: string) => { 
     const res = await fetch(`${API_BASE_URL}/auth`, {
     method: "POST",
@@ -48,24 +35,7 @@ const crearUsuario: IcrearUsuario = async (email: string, password: string) => {
   const data = await res.json();
   return data.token;
 }
-const crearUsuarioOk: IcrearUsuario = (email: string, password: string) => { 
-  return new Promise<string>(resolve => {
-    setTimeout(() => {
-      resolve('tokenfalso');
-    }, 2000)
-  });
+export {
+  verificarUsuario,
+  crearUsuario,
 }
-const crearUsuarioError: IcrearUsuario = (email: string, password: string) => { 
-  return new Promise<string>((_resolve, reject) => {
-    setTimeout(() => {
-      reject("Error al verificar usuario: Simulacro de error");
-    }, 2000);
-  });
-}
-// --- Obtener Mis Datos ---  
-// --- Exportaciones ---
-export const controladorUsuario = {
-  crearUsuario: crearUsuario,
-  verificarUsuario: verificarUsuario,
-}
-export { verificarUsuario, verificarUsuarioOk, verificarUsuarioError, crearUsuario, crearUsuarioOk, crearUsuarioError }
