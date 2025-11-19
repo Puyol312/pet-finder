@@ -27,7 +27,9 @@ class State {
       ...prevState,
       user,
     };
-    this.saveToLocalStorage();
+    if (user.record) {
+      this.saveToLocalStorage();
+    }
   }
   public setGeolocation(geolocation: Geolocation) {
     const prevState = this.getState() ?? { user: null, geolocation: null };
@@ -54,6 +56,28 @@ class State {
   }
   public getState(): Data | null { 
     return this.data;
+  }
+  public EstaUsuarioRegistrado(): boolean { 
+    let flag:boolean = false; 
+    const data = this.getState();
+    if (data && data.user && data.user.token) { 
+      flag = true;
+    }
+    return flag;
+  }
+  public EstaUbicado(): boolean { 
+    let flag = false;
+    const data = this.getState();
+    if (data && data.geolocation && data.geolocation.lat && data.geolocation.lng) { 
+      flag = true;
+    }
+    return flag
+  }
+  public clearUser() { 
+    if (this.data) {
+      this.data.user = null;
+      this.saveToLocalStorage();
+    }
   }
   public subscribe(callback: () => any) { 
     this.listeners.push(callback);

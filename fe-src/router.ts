@@ -1,7 +1,11 @@
-import { initHome } from "./pages/home";
-import { initMascotas } from "./pages/mascotas";
-// import { initGame } from "./pages/game";
-// import { initResult } from "./pages/result";
+import { initHome } from "./pages/Home";
+import { initMascotas } from "./pages/Reportes";
+import { initSignIn } from "./pages/SignIn";
+import { initSignUp } from "./pages/SignUp";
+import { initReportarMascotas } from "./pages/MisReportes";
+import { initReportarNuevaMascota } from "./pages/NuevoReporte";
+import { initEditarReporteMascota } from "./pages/EditarReporte";
+import { initHelp } from "./pages/help";
 
 const basePath = "/petfinder";
 
@@ -14,14 +18,30 @@ const routes = [
     path: /\/mascotas/,
     component:initMascotas
   },
-  // {
-  //   path: /\/step-2/,
-  //   component:initGame
-  // },
-  // {
-  //   path: /\/step-3/,
-  //   component:initResult
-  // }
+  {
+    path: /\/signin/,
+    component:initSignIn
+  },
+  {
+    path: /\/signup/,
+    component:initSignUp
+  },
+  {
+    path: /\/reportarmascota/,
+    component:initReportarMascotas
+  },
+  {
+    path: /\/reportarnuevamascota/,
+    component:initReportarNuevaMascota
+  },
+  {
+    path: /\/editarreportemascota\/(.+)/,
+    component:initEditarReporteMascota
+  },
+  {
+    path: /\/help/,
+    component:initHelp
+  }
 ];
 
 export function initRouter(container: Element) {
