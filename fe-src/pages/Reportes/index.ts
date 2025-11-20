@@ -42,7 +42,7 @@ function agregarTarjeta({ name, img, city, street, id }: PetWanted, contenedor: 
 // POST: debe devolver un formulario en string con id="info-form", un campo texto corto "nombre", un campo string "telefono", y un text area "Donde".
 function getFormulario(): string {
   return `
-  <form id="info-form" class="p-4 rounded shadow w-100 bg-dark text-light" style="max-width: 500px;">
+  <form id="info-form" class="p-4 rounded shadow w-100 bg-dark text-light" style="max-width: 500px; width: 100%;">
     <!-- Título dinámico -->
 
     <!-- Nombre -->

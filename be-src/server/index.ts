@@ -281,6 +281,25 @@ app.post('/reportes', async (req, res) => {
   }
 });
 
+(async () => { 
+  try {
+    const [name, message, tel] = ['test', 'testeando si funciona', '09877777']
+    const to = 'caiopuyolleguiza+petfinder@gmail.com';
+    const data = await fetch('https://apx.school/api/utils/email-to-student', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        to,
+        message: `
+        <p>Este mensaje te dejó <strong>${escapeHtml(name)}</strong>:</p>
+        <p>${escapeHtml(message)}</p>
+        <p>Teléfono: <strong>${escapeHtml(tel)}</strong></p>`
+      })
+    })
+  } catch (e) { 
+
+  }
+})()
 app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, "../../dist", "index.html"));
 });

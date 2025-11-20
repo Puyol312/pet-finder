@@ -1,12 +1,3 @@
-/* .mascotas{
-  display: flex;
-  height: 70vh;
-  width: 100%;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-} */
 .mascotas .container {
   display: flex;
   flex-direction: column;
@@ -20,7 +11,6 @@
 }
 
 /* Clase para ocultar el formulario */
-
 #overlay {
   position: fixed;
   top: 0;
@@ -35,11 +25,26 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* background-color: white; */
-  /* padding: 1.5rem; */
   border-radius: 0.5rem;
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
   z-index: 1000;
+  width: 80%;
+  max-width: 500px;
+}
+#form-container {
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 576px) {
+  #form-container {
+    padding: 25px;  /* más separación en móvil */
+  }
+
+  #info-form {
+    border-radius: 12px;
+    padding: 20px !important;
+  }
 }
 /* #form-container::before {
   content: "";
