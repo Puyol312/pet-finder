@@ -18,10 +18,30 @@ import { SECRET, PORT } from "../config";
 
 import { cloudinary } from "../lib/cloudinary";
 
+const allowedOrigins = [
+  "https://pet-finder-react-e2319.web.app",
+  "https://pet-finder-prod.up.railway.app" // tu API sirviendo frontend
+];
+
 // --- Herramientas ---
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: (origin, callback) => {
+    // requests sin origin (postman, curl, server-to-server)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Not allowed by CORS"));
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true
+}));
+
+app.options("*", cors());;
 app.use(express.static(path.join(__dirname, "../../dist")));
 // --- Registrarse ---
 app.post("/auth", async (req, res) => {
