@@ -41,7 +41,7 @@ app.use(cors({
   credentials: true
 }));
 
-app.options("*", cors());;
+app.options(/.*/, cors());
 app.use(express.static(path.join(__dirname, "../../dist")));
 // --- Registrarse ---
 app.post("/auth", async (req, res) => {
