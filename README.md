@@ -15,7 +15,7 @@ Incluye una **API REST** + un **Frontend dinámico** que permite:
 
 Hacé clic para importar la colección completa:
 
-[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" width="150">](https://app.getpostman.com/run-collection/47803384-ae657671-af89-422b-8880-71d2da69eb75?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D47803384-ae657671-af89-422b-8880-71d2da69eb75%26entityType%3Dcollection%26workspaceId%3Df471657a-aa4b-4d8c-82de-65dda67ac8ba)
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" width="150">](https://www.postman.com/caiopuyolleguiza-3396697/workspace/serverless-api)
 
 ---
 
