@@ -15,7 +15,7 @@ Incluye una **API REST** + un **Frontend dinámico** que permite:
 
 Hacé clic para importar la colección completa:
 
-[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" width="150">](https://www.postman.com/caiopuyolleguiza-3396697/workspace/serverless-api)
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" width="150">](https://www.postman.com/caiopuyolleguiza-3396697/workspace/petfinder)
 
 ---
 
